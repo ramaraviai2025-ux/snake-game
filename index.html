@@ -1,9 +1,1201 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Hello Page</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RISHUBH RAJ</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            height: 100vh;
+            overflow: hidden;
+            font-family: 'Orbitron', monospace;
+            background: #050509;
+            position: relative;
+            color: #fff;
+        }
+
+        /* Dynamic gradient background */
+        .bg-gradient {
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle at 10% 20%, #00f5ff22, transparent 60%),
+                        radial-gradient(circle at 80% 80%, #ff00ff22, transparent 60%),
+                        linear-gradient(135deg, #020311, #050016, #020311);
+            background-size: 200% 200%;
+            animation: gradientShift 10s ease-in-out infinite;
+            z-index: 0;
+        }
+
+        /* Technology particles */
+        .tech-particles {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            background: linear-gradient(45deg, #00f5ff, #ff00ff, #00ff88);
+            border-radius: 50%;
+            animation: float 6s infinite linear;
+            opacity: 0.7;
+        }
+
+        /* Matrix layer */
+        .matrix-bg {
+            position: fixed;
+            inset: 0;
+            font-size: 1.2rem;
+            font-family: monospace;
+            color: #00ff41;
+            opacity: 0.08;
+            z-index: 1;
+            overflow: hidden;
+            white-space: pre-wrap;
+            padding: 10px;
+            animation: matrixFall 20s linear infinite;
+        }
+
+        /* Top-right dropdown menu */
+        .top-nav {
+            position: fixed;
+            top: 16px;
+            right: 16px;
+            z-index: 9;
+            font-family: 'Orbitron', monospace;
+        }
+
+        .menu-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1rem;
+            border-radius: 999px;
+            border: 1px solid rgba(0, 245, 255, 0.6);
+            background: radial-gradient(circle at top, rgba(0, 245, 255, 0.18), rgba(3, 12, 40, 0.95));
+            color: #e5faff;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            cursor: pointer;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
+        }
+
+        .menu-toggle-icon {
+            width: 16px;
+            height: 14px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .menu-toggle-icon span {
+            display: block;
+            height: 2px;
+            border-radius: 999px;
+            background: #00f5ff;
+            transform-origin: center;
+            transition: transform 0.25s ease, opacity 0.25s ease;
+        }
+
+        .menu-toggle.open .line1 {
+            transform: translateY(6px) rotate(45deg);
+        }
+        .menu-toggle.open .line2 {
+            opacity: 0;
+        }
+        .menu-toggle.open .line3 {
+            transform: translateY(-6px) rotate(-45deg);
+        }
+
+        .menu-label {
+            font-weight: 700;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            right: 0;
+            margin-top: 0.5rem;
+            width: 220px;
+            background: rgba(3, 8, 30, 0.98);
+            border-radius: 14px;
+            border: 1px solid rgba(0, 245, 255, 0.4);
+            box-shadow: 0 18px 50px rgba(0, 0, 0, 0.85);
+            overflow: hidden;
+            transform-origin: top right;
+            transform: scale(0.8) translateY(-10px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease, transform 0.25s ease;
+        }
+
+        .dropdown-menu.open {
+            opacity: 1;
+            pointer-events: auto;
+            transform: scale(1) translateY(0);
+        }
+
+        .dropdown-item {
+            padding: 0.75rem 1rem;
+            font-size: 0.8rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: #dbe5ff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background 0.2s ease, color 0.2s ease;
+        }
+
+        .dropdown-item span.label {
+            font-weight: 700;
+        }
+
+        .dropdown-item span.icon {
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+
+        .dropdown-item:hover {
+            background: radial-gradient(circle at left, rgba(0, 245, 255, 0.16), transparent 60%);
+            color: #ffffff;
+        }
+
+        /* Main content centered */
+        .main-wrapper {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            z-index: 5;
+            padding: 0 16px;
+        }
+
+        .main-title {
+            font-size: clamp(3rem, 8vw, 5rem);
+            font-weight: 900;
+            background: linear-gradient(45deg, #00f5ff, #ff00ff, #00ff88, #ffffff);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(0, 245, 255, 0.5);
+            animation: titleGlow 3s ease-in-out infinite alternate,
+                       titleFloat 6s ease-in-out infinite,
+                       gradientShift 7s linear infinite;
+            letter-spacing: 0.15em;
+            margin-bottom: 2.5rem;
+            cursor: pointer;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .tech-btn {
+            padding: 1rem 2.5rem;
+            font-size: 1rem;
+            font-weight: 700;
+            font-family: 'Orbitron', monospace;
+            color: #fff;
+            background: linear-gradient(45deg, rgba(0, 245, 255, 0.18), rgba(255, 0, 255, 0.18));
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 999px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+        }
+
+        .tech-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+            transition: left 0.5s;
+        }
+
+        .tech-btn:hover::before {
+            left: 100%;
+        }
+
+        .tech-btn:hover {
+            transform: translateY(-6px) scale(1.03);
+            box-shadow: 0 18px 40px rgba(0, 245, 255, 0.45);
+            border-color: #00f5ff;
+        }
+
+        /* Fullscreen overlay sections */
+        .content-section {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 7;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        .content-section.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .content-box {
+            max-width: 900px;
+            width: 90%;
+            background: radial-gradient(circle at top, #1a1a33ee, #050515ee);
+            border-radius: 24px;
+            padding: 2.5rem 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
+            position: relative;
+            overflow: hidden;
+            animation: popIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .content-box::before {
+            content: "";
+            position: absolute;
+            inset: -40%;
+            background: radial-gradient(circle, #00f5ff16, transparent 60%);
+            opacity: 0.8;
+        }
+
+        .content-inner {
+            position: relative;
+            z-index: 1;
+        }
+
+        .institute-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 900;
+            background: linear-gradient(45deg, #ff6b6b, #ffd93d, #6bcf7f, #4d96ff);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+            text-shadow: 0 0 30px rgba(255, 107, 107, 0.6);
+            animation: gradientShift 5s linear infinite;
+            margin-bottom: 1.5rem;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.25em;
+            color: #a0b0ff;
+            margin-bottom: 2rem;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .skill-item {
+            padding: 1.2rem 1rem;
+            background: linear-gradient(145deg, #15152b, #0a0a18);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #f5f5ff;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            box-shadow: 0 14px 25px rgba(0, 0, 0, 0.7);
+            transform: translateY(40px);
+            opacity: 0;
+            animation: skillSlide 0.6s ease forwards;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-item::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 16px;
+            background: radial-gradient(circle at top, rgba(0, 245, 255, 0.18), transparent 60%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .skill-item:hover::after {
+            opacity: 1;
+        }
+
+        .skill-item:hover {
+            transform: translateY(32px) scale(1.03);
+            box-shadow: 0 18px 45px rgba(0, 245, 255, 0.3);
+        }
+
+        .skill-item:nth-child(1) { animation-delay: 0.1s; }
+        .skill-item:nth-child(2) { animation-delay: 0.25s; }
+        .skill-item:nth-child(3) { animation-delay: 0.4s; }
+        .skill-item:nth-child(4) { animation-delay: 0.55s; }
+        .skill-item:nth-child(5) { animation-delay: 0.7s; }
+        .skill-item:nth-child(6) { animation-delay: 0.85s; }
+
+        .close-hint {
+            margin-top: 1.8rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #8890ff;
+            opacity: 0.9;
+        }
+
+        .close-hint span {
+            color: #00f5ff;
+        }
+
+        /* Skill detail modal */
+        .skill-modal {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            background: radial-gradient(circle at center, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.94));
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.35s ease;
+        }
+
+        .skill-modal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .skill-modal-box {
+            max-width: 700px;
+            width: 90%;
+            background: linear-gradient(135deg, #080819, #15152f);
+            border-radius: 22px;
+            padding: 2.2rem 2rem;
+            border: 1px solid rgba(0, 245, 255, 0.4);
+            box-shadow: 0 26px 70px rgba(0, 0, 0, 0.9);
+            position: relative;
+            overflow: hidden;
+            animation: zoomIn 0.45s cubic-bezier(0.45, 1.35, 0.45, 0.9);
+        }
+
+        .skill-modal-box::before {
+            content: "";
+            position: absolute;
+            inset: -30%;
+            background:
+                conic-gradient(from 0deg, rgba(0, 245, 255, 0.2), transparent 20%, rgba(255, 0, 255, 0.2), transparent 40%, rgba(0, 255, 136, 0.24), transparent 60%, rgba(0, 245, 255, 0.2), transparent 80%);
+            opacity: 0.8;
+            animation: rotateGlow 8s linear infinite;
+        }
+
+        .skill-modal-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .skill-modal-close {
+            position: absolute;
+            top: 10px;
+            right: 14px;
+            font-size: 1.3rem;
+            cursor: pointer;
+            color: #a5b2ff;
+        }
+
+        .skill-modal-close:hover {
+            color: #ffffff;
+        }
+
+        .skill-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 999px;
+            background: rgba(0, 245, 255, 0.1);
+            border: 1px solid rgba(0, 245, 255, 0.6);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: #dffcff;
+            margin-bottom: 1rem;
+        }
+
+        .skill-modal-title {
+            font-size: 1.9rem;
+            margin-bottom: 0.8rem;
+            background: linear-gradient(45deg, #00f5ff, #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .skill-modal-text {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #e5e7ff;
+            margin-bottom: 1.4rem;
+        }
+
+        /* Price and offer */
+        .course-price-row {
+            display: flex;
+            align-items: baseline;
+            gap: 0.6rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .course-old-price {
+            font-size: 1.1rem;
+            color: #ff8f9a;
+            text-decoration: line-through;
+            opacity: 0.8;
+        }
+
+        .course-new-price {
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: #00ff9d;
+            text-shadow: 0 0 18px rgba(0, 255, 157, 0.7);
+            animation: pulseBadge 2s ease-in-out infinite;
+        }
+
+        .course-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.4rem 0.9rem;
+            border-radius: 999px;
+            background: radial-gradient(circle at left, #ff006a, #ffb100);
+            color: #02040b;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            font-size: 0.7rem;
+            margin-bottom: 0.8rem;
+            box-shadow: 0 12px 30px rgba(255, 0, 106, 0.6);
+        }
+
+        .course-cta {
+            margin-top: 0.2rem;
+            font-size: 0.9rem;
+            color: #c8d0ff;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            margin-top: 1.3rem;
+            padding: 0.8rem 1.8rem;
+            border-radius: 999px;
+            border: none;
+            background: linear-gradient(135deg, #00f5ff, #00ff88);
+            color: #02040b;
+            font-weight: 800;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            cursor: pointer;
+            box-shadow: 0 18px 45px rgba(0, 245, 255, 0.6);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button span.spark {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at top, rgba(255, 255, 255, 0.7), transparent 55%);
+            opacity: 0;
+            animation: spark 1.8s linear infinite;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px) scale(1.02);
+        }
+
+        .cta-note {
+            margin-top: 0.8rem;
+            font-size: 0.8rem;
+            color: #8fa5ff;
+        }
+
+        /* Enrollment info text shown after clicking ENROLL */
+        .enroll-info {
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: #fffdc5;
+            background: rgba(0, 0, 0, 0.35);
+            border-radius: 999px;
+            padding: 0.6rem 1rem;
+            border: 1px dashed rgba(255, 255, 255, 0.35);
+            display: none;
+        }
+
+        .enroll-info.active {
+            display: inline-block;
+            animation: popIn 0.4s ease;
+        }
+
+        /* Extra modals from dropdown: Enrollment, News, Gallery */
+        .info-modal {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 8;
+            background: radial-gradient(circle at center, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.94));
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.35s ease;
+        }
+
+        .info-modal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .info-box {
+            max-width: 700px;
+            width: 90%;
+            background: radial-gradient(circle at top, #181833, #050515);
+            border-radius: 22px;
+            padding: 2rem 1.8rem;
+            border: 1px solid rgba(0, 245, 255, 0.4);
+            box-shadow: 0 28px 70px rgba(0, 0, 0, 0.9);
+            position: relative;
+            overflow: hidden;
+            animation: zoomIn 0.45s cubic-bezier(0.45, 1.35, 0.45, 0.9);
+        }
+
+        .info-box::before {
+            content: "";
+            position: absolute;
+            inset: -30%;
+            background: radial-gradient(circle, rgba(0, 245, 255, 0.18), transparent 60%);
+            opacity: 0.5;
+        }
+
+        .info-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .info-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.9rem;
+            color: #e8f0ff;
+        }
+
+        .info-text {
+            font-size: 0.95rem;
+            color: #d8e0ff;
+            line-height: 1.7;
+        }
+
+        .info-close {
+            position: absolute;
+            top: 10px;
+            right: 12px;
+            font-size: 1.3rem;
+            cursor: pointer;
+            color: #a5b2ff;
+        }
+
+        .info-close:hover {
+            color: #ffffff;
+        }
+
+        /* Gallery grid */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            height: 120px;
+            border-radius: 16px;
+            overflow: hidden;
+            background-size: cover;
+            background-position: center;
+            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.8);
+            transform: translateY(20px);
+            opacity: 0;
+            animation: skillSlide 0.6s ease forwards;
+        }
+
+        .gallery-item:nth-child(1) { animation-delay: 0.1s; }
+        .gallery-item:nth-child(2) { animation-delay: 0.25s; }
+        .gallery-item:nth-child(3) { animation-delay: 0.4s; }
+        .gallery-item:nth-child(4) { animation-delay: 0.55s; }
+
+        .gallery-item::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.75), transparent 50%);
+        }
+
+        .gallery-caption {
+            position: absolute;
+            left: 10px;
+            bottom: 8px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            color: #e8f7ff;
+            z-index: 1;
+        }
+
+        /* Gallery placeholder backgrounds */
+        .gallery-ai {
+            background-image:
+                linear-gradient(135deg, #00f5ff, #003566),
+                repeating-linear-gradient(120deg, rgba(0,0,0,0.4) 0 2px, transparent 2px 4px);
+        }
+
+        .gallery-powerbi {
+            background-image:
+                radial-gradient(circle at top, #ffea00, #ff9100),
+                linear-gradient(145deg, #151515, #1f1f1f);
+        }
+
+        .gallery-code {
+            background-image:
+                linear-gradient(145deg, #0c1c0f, #021002),
+                repeating-linear-gradient(180deg, rgba(0,255,0,0.6) 0 2px, transparent 2px 6px);
+        }
+
+        .gallery-automation {
+            background-image:
+                linear-gradient(135deg, #ff00ff, #00f5ff),
+                radial-gradient(circle at bottom, #000000, #050505);
+        }
+
+        /* Animations */
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes titleGlow {
+            0% { filter: drop-shadow(0 0 18px rgba(0, 245, 255, 0.6)); }
+            100% { filter: drop-shadow(0 0 38px rgba(0, 245, 255, 0.9)); }
+        }
+
+        @keyframes titleFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(110vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.8; }
+            100% {
+                transform: translateY(-10vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes matrixFall {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(0); }
+        }
+
+        @keyframes popIn {
+            0% {
+                transform: scale(0.7) translateY(40px);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes skillSlide {
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes zoomIn {
+            0% {
+                transform: scale(0.4) translateY(40px);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes rotateGlow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes pulseBadge {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.06); }
+        }
+
+        @keyframes spark {
+            0% { opacity: 0; transform: translateX(-100%); }
+            40% { opacity: 1; }
+            100% { opacity: 0; transform: translateX(100%); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+            .tech-btn {
+                width: 100%;
+                max-width: 320px;
+            }
+            .content-box {
+                padding: 2rem 1.4rem;
+            }
+            .skill-modal-box,
+            .info-box {
+                padding: 1.8rem 1.4rem;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>hello i am rishubh raj</h1>
+    <!-- Background layers -->
+    <div class="bg-gradient"></div>
+    <div class="tech-particles" id="particles"></div>
+    <div class="matrix-bg" id="matrix"></div>
+
+    <!-- Top-right dropdown -->
+    <div class="top-nav">
+        <button class="menu-toggle" id="menu-toggle">
+            <div class="menu-toggle-icon">
+                <span class="line1"></span>
+                <span class="line2"></span>
+                <span class="line3"></span>
+            </div>
+            <span class="menu-label">MENU</span>
+        </button>
+        <div class="dropdown-menu" id="dropdown-menu">
+            <div class="dropdown-item" data-nav="home">
+                <span class="label">HOME</span>
+                <span class="icon">⌂</span>
+            </div>
+            <div class="dropdown-item" data-nav="enrollment">
+                <span class="label">ENROLLMENT</span>
+                <span class="icon">☎</span>
+            </div>
+            <div class="dropdown-item" data-nav="news">
+                <span class="label">NEWS & OFFERS</span>
+                <span class="icon">★</span>
+            </div>
+            <div class="dropdown-item" data-nav="gallery">
+                <span class="label">GALLERY</span>
+                <span class="icon">▣</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Centered main content -->
+    <div class="main-wrapper">
+        <h1 class="main-title" id="home-title">RISHUBH RAJ</h1>
+        <div class="buttons">
+            <button class="tech-btn" onclick="showSection('company-section')">My Company</button>
+            <button class="tech-btn" onclick="showSection('professionality-section')">My Professionality</button>
+        </div>
+    </div>
+
+    <!-- Company section -->
+    <div id="company-section" class="content-section">
+        <div class="content-box">
+            <div class="content-inner">
+                <h2 class="institute-title">RISHUBH'S INSTITUTE OF AI</h2>
+                <p class="subtitle">Entrance to the future of intelligence</p>
+                <p class="close-hint">Click anywhere outside this box or press <span>ESC</span> to close.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Professionality section -->
+    <div id="professionality-section" class="content-section">
+        <div class="content-box">
+            <div class="content-inner">
+                <h2 class="institute-title">My Professionality</h2>
+                <p class="subtitle">Core technologies and expertise</p>
+                <div class="skills-grid">
+                    <div class="skill-item" data-skill="ai">🤖 AI</div>
+                    <div class="skill-item" data-skill="microsoft">💼 MICROSOFT</div>
+                    <div class="skill-item" data-skill="sql">🗄️ SQL</div>
+                    <div class="skill-item" data-skill="powerbi">📊 POWER BI</div>
+                    <div class="skill-item" data-skill="prompt">✨ PROMPT ENGINEERING</div>
+                    <div class="skill-item" data-skill="coding">💻 CODING</div>
+                </div>
+                <p class="close-hint">Click anywhere outside this box or press <span>ESC</span> to close.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Skill detail modal -->
+    <div id="skill-modal" class="skill-modal">
+        <div class="skill-modal-box">
+            <div class="skill-modal-content">
+                <div class="skill-modal-close" id="skill-modal-close">✕</div>
+                <div class="skill-tag" id="skill-tag-label">
+                    <span>FOCUS</span>
+                </div>
+                <h3 class="skill-modal-title" id="skill-modal-title">Skill Title</h3>
+                <p class="skill-modal-text" id="skill-modal-text">
+                    Description goes here.
+                </p>
+
+                <div class="course-price-row">
+                    <span class="course-old-price">₹999</span>
+                    <span class="course-new-price">₹9 OFFER</span>
+                </div>
+                <div class="course-badge">
+                    <span>PRO COURSE</span>
+                    <span>LIMITED TIME</span>
+                </div>
+
+                <p class="course-cta" id="skill-modal-cta">
+                    Short course pitch goes here.
+                </p>
+
+                <button class="cta-button" id="enroll-btn">
+                    <span class="spark"></span>
+                    <span>ENROLL NOW</span>
+                    <span>→</span>
+                </button>
+
+                <p class="enroll-info" id="enroll-info">
+                    CONTACT 8437470640 FOR COURSE ENROLLMENT AND INFO
+                </p>
+
+                <p class="cta-note">Lifetime access • Certificate of Excellence • Designed & taught by Rishubh Raj</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Enrollment modal (dropdown option 2) -->
+    <div id="enrollment-modal" class="info-modal">
+        <div class="info-box">
+            <div class="info-close" data-close-info>✕</div>
+            <div class="info-content">
+                <h3 class="info-title">Course Enrollment</h3>
+                <p class="info-text">
+                    To enroll in any professional course or to get personal guidance,<br>
+                    contact <b>8437470640</b> on call or WhatsApp for full details, schedule, and payment options.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- News & Offers modal (dropdown option 3) -->
+    <div id="news-modal" class="info-modal">
+        <div class="info-box">
+            <div class="info-close" data-close-info>✕</div>
+            <div class="info-content">
+                <h3 class="info-title">News & Live Offers</h3>
+                <p class="info-text">
+                    Hurry up! The live price discount is ending soon.<br>
+                    Enroll now in your favourite course for just <b>₹9</b> and lock this opportunity before it goes back to the original price.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gallery modal (dropdown option 4) -->
+    <div id="gallery-modal" class="info-modal">
+        <div class="info-box">
+            <div class="info-close" data-close-info>✕</div>
+            <div class="info-content">
+                <h3 class="info-title">AI & Automation Gallery</h3>
+                <p class="info-text">
+                    A visual glimpse of dashboards, AI workflows, green code, and automation inspired by professional projects.
+                </p>
+                <div class="gallery-grid">
+                    <div class="gallery-item gallery-powerbi">
+                        <div class="gallery-caption">POWER BI DASHBOARD</div>
+                    </div>
+                    <div class="gallery-item gallery-ai">
+                        <div class="gallery-caption">AI AUTOMATED WORK</div>
+                    </div>
+                    <div class="gallery-item gallery-code">
+                        <div class="gallery-caption">GREEN CODE SCRIPTS</div>
+                    </div>
+                    <div class="gallery-item gallery-automation">
+                        <div class="gallery-caption">SMART AUTOMATIONS</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Particles
+        function createParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 45; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                p.style.left = Math.random() * 100 + '%';
+                p.style.animationDelay = Math.random() * 6 + 's';
+                p.style.animationDuration = (Math.random() * 3 + 5) + 's';
+                const size = (Math.random() * 3 + 2);
+                p.style.width = size + 'px';
+                p.style.height = size + 'px';
+                container.appendChild(p);
+            }
+        }
+
+        // Matrix text
+        function fillMatrix() {
+            const matrix = document.getElementById('matrix');
+            const chars = '01 AI SQL BI MS CODE ';
+            let text = '';
+            for (let i = 0; i < 400; i++) {
+                text += chars[Math.floor(Math.random() * chars.length)];
+            }
+            matrix.textContent = text;
+        }
+
+        // Main section show/hide
+        function hideAllSections() {
+            document.querySelectorAll('.content-section').forEach(sec => {
+                sec.classList.remove('active');
+            });
+        }
+
+        function showSection(id) {
+            hideAllSections();
+            document.getElementById('dropdown-menu').classList.remove('open');
+            document.getElementById('menu-toggle').classList.remove('open');
+            const sec = document.getElementById(id);
+            if (!sec) return;
+            sec.classList.add('active');
+        }
+
+        document.querySelectorAll('.content-section').forEach(sec => {
+            sec.addEventListener('click', e => {
+                if (e.target === sec) {
+                    hideAllSections();
+                }
+            });
+        });
+
+        // Skill modal logic
+        const skillModal = document.getElementById('skill-modal');
+        const skillModalTitle = document.getElementById('skill-modal-title');
+        const skillModalText = document.getElementById('skill-modal-text');
+        const skillModalCta = document.getElementById('skill-modal-cta');
+        const skillTagLabel = document.getElementById('skill-tag-label');
+        const enrollInfo = document.getElementById('enroll-info');
+        const enrollBtn = document.getElementById('enroll-btn');
+
+        const skillContent = {
+            ai: {
+                title: "Artificial Intelligence Mastery",
+                tag: "AI EXPERTISE",
+                text: "Rishubh designs intelligent systems that solve complex real-world problems and guides learners into building their own AI agents with clarity and confidence.",
+                cta: "Join a focused micro–course where you build AI projects step-by-step and understand the logic behind every decision — for just ₹9."
+            },
+            microsoft: {
+                title: "Microsoft Ecosystem Power User",
+                tag: "MICROSOFT SUITE",
+                text: "From Office tools to cloud-powered workflows, Rishubh uses the Microsoft stack to automate tasks, organize teams, and present data with impact.",
+                cta: "Learn the exact shortcuts, templates, and systems used to manage professional work using Microsoft tools — structured neatly in a ₹9 pro course."
+            },
+            sql: {
+                title: "SQL & Data Querying",
+                tag: "DATA WITH SQL",
+                text: "Rishubh writes clean SQL queries to pull insights from large datasets, structure reports, and support decision-making with data-backed clarity.",
+                cta: "Master filters, joins, aggregations, and real exam-style questions in a crisp SQL foundation course crafted for ambitious learners — only ₹9."
+            },
+            powerbi: {
+                title: "Power BI Storytelling",
+                tag: "POWER BI DASHBOARDS",
+                text: "Using interactive dashboards, Rishubh converts raw tables into crystal-clear visuals that explain trends, patterns, and stories behind the numbers.",
+                cta: "Discover how to build professional dashboards, measures, and visuals that feel exam-ready and job-ready — inside a compact ₹9 Power BI course."
+            },
+            prompt: {
+                title: "Prompt Engineering Excellence",
+                tag: "PROMPT ENGINEERING",
+                text: "Rishubh engineers prompts that turn AI tools into powerful assistants for teaching, content creation, and data analysis with remarkable accuracy.",
+                cta: "Unlock the frameworks, templates, and live examples of high-converting prompts in a premium-style prompt engineering micro–course — just ₹9."
+            },
+            coding: {
+                title: "Coding & Automation Skills",
+                tag: "CODING",
+                text: "With clean, logical code, Rishubh builds automation scripts and teaching tools that simplify work, remove repetition, and make systems feel intelligent.",
+                cta: "Learn structured coding habits, automation tricks, and exam-focused logic-building in a compact yet powerful coding course — all at a ₹9 offer price."
+            }
+        };
+
+        function openSkillModal(skillKey) {
+            const data = skillContent[skillKey];
+            if (!data) return;
+
+            skillModalTitle.textContent = data.title;
+            skillModalText.textContent = data.text;
+            skillModalCta.textContent = data.cta;
+            skillTagLabel.innerHTML = `<span>${data.tag}</span>`;
+            enrollInfo.classList.remove('active');
+            skillModal.classList.add('active');
+        }
+
+        function hideSkillModal() {
+            skillModal.classList.remove('active');
+        }
+
+        document.getElementById('skill-modal-close').addEventListener('click', hideSkillModal);
+
+        skillModal.addEventListener('click', e => {
+            if (e.target === skillModal) hideSkillModal();
+        });
+
+        document.querySelectorAll('.skill-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const skillKey = item.getAttribute('data-skill');
+                openSkillModal(skillKey);
+            });
+        });
+
+        // ENROLL button shows contact text
+        enrollBtn.addEventListener('click', () => {
+            enrollInfo.classList.add('active');
+        });
+
+        // Dropdown menu behaviour
+        const menuToggle = document.getElementById('menu-toggle');
+        const dropdownMenu = document.getElementById('dropdown-menu');
+
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('open');
+            dropdownMenu.classList.toggle('open');
+        });
+
+        document.addEventListener('click', e => {
+            if (!menuToggle.contains(e.target) && !dropdownMenu.contains(e.target)) {
+                dropdownMenu.classList.remove('open');
+                menuToggle.classList.remove('open');
+            }
+        });
+
+        // Dropdown options
+        dropdownMenu.querySelectorAll('.dropdown-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const nav = item.getAttribute('data-nav');
+
+                if (nav === 'home') {
+                    hideAllSections();
+                    hideSkillModal();
+                } else if (nav === 'enrollment') {
+                    openInfoModal('enrollment-modal');
+                } else if (nav === 'news') {
+                    openInfoModal('news-modal');
+                } else if (nav === 'gallery') {
+                    openInfoModal('gallery-modal');
+                }
+
+                dropdownMenu.classList.remove('open');
+                menuToggle.classList.remove('open');
+            });
+        });
+
+        // Info modals
+        function openInfoModal(id) {
+            document.querySelectorAll('.info-modal').forEach(m => m.classList.remove('active'));
+            const modal = document.getElementById(id);
+            if (modal) modal.classList.add('active');
+        }
+
+        function closeInfoModals() {
+            document.querySelectorAll('.info-modal').forEach(m => m.classList.remove('active'));
+        }
+
+        document.querySelectorAll('[data-close-info]').forEach(btn => {
+            btn.addEventListener('click', closeInfoModals);
+        });
+
+        document.querySelectorAll('.info-modal').forEach(m => {
+            m.addEventListener('click', e => {
+                if (e.target === m) closeInfoModals();
+            });
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') {
+                hideAllSections();
+                hideSkillModal();
+                closeInfoModals();
+                dropdownMenu.classList.remove('open');
+                menuToggle.classList.remove('open');
+            }
+        });
+
+        // Clicking main title returns home
+        document.getElementById('home-title').addEventListener('click', () => {
+            hideAllSections();
+            hideSkillModal();
+            closeInfoModals();
+        });
+
+        // Init
+        window.addEventListener('load', () => {
+            createParticles();
+            fillMatrix();
+            setInterval(fillMatrix, 6000);
+        });
+    </script>
 </body>
 </html>
